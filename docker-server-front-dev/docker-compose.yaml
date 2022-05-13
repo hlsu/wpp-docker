@@ -1,9 +1,9 @@
 version: '3'
 
-services: 
+services:
 
   wppconnect-server:
-    build: 
+    build:
       context: ./wppconnect-server
       dockerfile: Dockerfile
     restart: always
@@ -14,12 +14,12 @@ services:
       - ./wppconnect-server/app:/home/node/app
       - /home/node/app/node_modules
     entrypoint: docker-entrypoint.sh yarn dev
-    networks: 
+    networks:
       - wpp-network
     tty: true
-  
+
   wppconnect-front:
-    build: 
+    build:
       context: ./wppconnect-front
       dockerfile: Dockerfile
     image: wppconnect-front
@@ -29,14 +29,14 @@ services:
       - ./wppconnect-front/app:/home/node/app
       - /home/node/app/node_modules
     entrypoint: docker-entrypoint.sh yarn start
-    networks: 
+    networks:
       - wpp-network
     tty: true
     depends_on:
       - wppconnect-server
 
   wppconnect-nginx:
-    build: 
+    build:
       context: ./wppconnect-nginx
       dockerfile: Dockerfile
     container_name: wppconnect-nginx
@@ -45,12 +45,11 @@ services:
     ports:
       - "8080:8080"
       - "8081:8081"
-    networks: 
+    networks:
       - wpp-network
     depends_on:
       - wppconnect-front
 
-networks: 
+networks:
   wpp-network:
-    name: wpp-network
-    driver: bridge 
+    driver: bridge
